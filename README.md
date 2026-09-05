@@ -1,55 +1,77 @@
 # MMM-TempestWeather
 
-A MagicMirror² module for displaying current weather conditions and a five-day forecast from a WeatherFlow Tempest weather station.
+A MagicMirror² weather module for WeatherFlow Tempest owners, combining real-time observations from your personal weather station with current conditions and a five-day forecast.
+
+![MMM-TempestWeather screenshot](screenshots/MMM-TempestWeather.png)
 
 ## Features
 
-- Real-time temperature from the Tempest WebSocket feed
-- Wind speed and direction
-- Relative humidity
-- Barometric pressure and pressure trend
-- Daily precipitation probability
-- Daily precipitation accumulation
-- Current weather conditions
-- Five-day forecast
-- Weather icons
-- Automatic WebSocket reconnection
-- Connection watchdog for stale observations
-- Automatic forecast updates
+* Real-time temperature from the Tempest WebSocket feed
+* Wind speed and direction
+* Relative humidity
+* Barometric pressure and pressure trend
+* Daily precipitation probability
+* Daily precipitation accumulation
+* Current weather conditions
+* Five-day forecast
+* Weather icons
+* Automatic WebSocket reconnection
+* Connection watchdog for stale observations
+* Automatic forecast updates
+
+## Status
+
+**Stable — Version 1.1**
+
+MMM-TempestWeather is running on a Raspberry Pi-based MagicMirror² installation and has been tested with live data from a WeatherFlow Tempest weather station.
 
 ## Requirements
 
-- MagicMirror²
-- WeatherFlow Tempest weather station
-- WeatherFlow personal access token
-- Tempest device ID
-- Tempest station ID
-- Internet connection
-- A Node.js version that provides built-in `fetch` and `WebSocket`
+* MagicMirror²
+* WeatherFlow Tempest weather station
+* WeatherFlow personal access token
+* Tempest device ID
+* Tempest station ID
+* Internet connection
+* A Node.js version that provides built-in `fetch` and `WebSocket`
 
-No additional npm packages are currently required.
+No additional npm packages are required.
+
+The WeatherFlow credentials identify your Tempest station and authorize access to its data. See the WeatherFlow/Tempest API documentation for current information about API access and credentials.
+
+Do not publish your personal WeatherFlow access token.
 
 ## Installation
 
-Clone or copy the module into the MagicMirror `modules` directory:
+From your MagicMirror `modules` directory:
 
-    ~/MagicMirror/modules/MMM-TempestWeather
+```bash
+cd ~/MagicMirror/modules
+git clone https://github.com/dwburger/MMM-TempestWeather.git
+```
 
-The module directory should contain:
+No `npm install` step is required.
 
-    MMM-TempestWeather/
-    ├── MMM-TempestWeather.js
-    ├── MMM-TempestWeather.css
-    ├── node_helper.js
-    └── README.md
+The module directory will contain:
 
-No `npm install` step is currently required.
+```text
+MMM-TempestWeather/
+├── MMM-TempestWeather.js
+├── MMM-TempestWeather.css
+├── node_helper.js
+├── README.md
+├── LICENSE
+└── screenshots/
+    └── MMM-TempestWeather.png
+```
 
 ## Configuration
 
 Add the following entry to the `modules` array in:
 
-    ~/MagicMirror/config/config.js
+```text
+~/MagicMirror/config/config.js
+```
 
 Example:
 
@@ -65,6 +87,8 @@ Example:
 },
 ```
 
+Restart MagicMirror after saving the configuration.
+
 Do not place your actual WeatherFlow token in a public Git repository.
 
 ## Configuration Options
@@ -73,19 +97,19 @@ Do not place your actual WeatherFlow token in a public Git repository.
 
 Your WeatherFlow personal access token.
 
-Required.
+**Required.**
 
 ### `deviceId`
 
 The device ID of your Tempest weather station.
 
-Required.
+**Required.**
 
 ### `stationId`
 
 The station ID used for WeatherFlow forecast data.
 
-Required.
+**Required.**
 
 ### `updateInterval`
 
@@ -93,7 +117,9 @@ How often forecast data is refreshed.
 
 Default:
 
-    60000
+```text
+60000
+```
 
 This is 60 seconds.
 
@@ -103,7 +129,9 @@ How long the module will wait without receiving a Tempest observation before tre
 
 Default:
 
-    180000
+```text
+180000
+```
 
 This is 3 minutes.
 
@@ -113,7 +141,9 @@ How long the module will wait for the first Tempest observation after establishi
 
 Default:
 
-    180000
+```text
+180000
+```
 
 This is 3 minutes.
 
@@ -123,7 +153,9 @@ How often the node helper checks the health of the Tempest WebSocket connection.
 
 Default:
 
-    60000
+```text
+60000
+```
 
 This is 60 seconds.
 
@@ -133,7 +165,9 @@ Maximum delay between WebSocket reconnection attempts.
 
 Default:
 
-    60000
+```text
+60000
+```
 
 This is 60 seconds.
 
@@ -143,7 +177,9 @@ Number of forecast days displayed.
 
 Default:
 
-    5
+```text
+5
+```
 
 ## Architecture
 
@@ -153,26 +189,26 @@ MMM-TempestWeather uses the standard MagicMirror frontend/node-helper architectu
 
 The browser-side module is responsible for:
 
-- Building the dashboard display
-- Receiving weather data from `node_helper.js`
-- Formatting current observations
-- Processing forecast data for display
-- Selecting weather icons
-- Updating the MagicMirror DOM
+* Building the dashboard display
+* Receiving weather data from `node_helper.js`
+* Formatting current observations
+* Processing forecast data for display
+* Selecting weather icons
+* Updating the MagicMirror DOM
 
 ### `node_helper.js`
 
 The Node.js helper is responsible for:
 
-- Connecting to the WeatherFlow WebSocket service
-- Receiving real-time Tempest observations
-- Requesting WeatherFlow Better Forecast data
-- Managing forecast update intervals
-- Detecting stale WebSocket observations
-- Automatically reconnecting the WebSocket
-- Applying exponential reconnect delays
-- Preventing overlapping forecast requests
-- Timing out stalled forecast requests
+* Connecting to the WeatherFlow WebSocket service
+* Receiving real-time Tempest observations
+* Requesting WeatherFlow Better Forecast data
+* Managing forecast update intervals
+* Detecting stale WebSocket observations
+* Automatically reconnecting the WebSocket
+* Applying exponential reconnect delays
+* Preventing overlapping forecast requests
+* Timing out stalled forecast requests
 
 The frontend and node helper communicate using MagicMirror socket notifications.
 
@@ -180,46 +216,52 @@ The frontend and node helper communicate using MagicMirror socket notifications.
 
 MMM-TempestWeather uses two WeatherFlow data sources:
 
-- The WeatherFlow WebSocket service for real-time Tempest observations.
-- The WeatherFlow Better Forecast REST service for forecast and current-condition information.
+* The WeatherFlow WebSocket service for real-time Tempest observations
+* The WeatherFlow Better Forecast REST service for forecast and current-condition information
 
 Weather icons are provided by the Meteocons weather icon set.
+
+Use of WeatherFlow data and services is subject to WeatherFlow's applicable terms and licensing.
 
 ## Reliability
 
 The module includes:
 
-- WebSocket reconnection
-- Exponential reconnect delay
-- Observation timeout detection
-- Initial connection timeout detection
-- Connection watchdog
-- Forecast request timeout
-- Protection against overlapping forecast requests
-- Basic validation of incoming weather observations
+* WebSocket reconnection
+* Exponential reconnect delay
+* Observation timeout detection
+* Initial connection timeout detection
+* Connection watchdog
+* Forecast request timeout
+* Protection against overlapping forecast requests
+* Basic validation of incoming weather observations
 
 ## Styling
 
 The appearance of the module is controlled by:
 
-    MMM-TempestWeather.css
+```text
+MMM-TempestWeather.css
+```
 
-The default layout is designed for a 400 × 350 pixel weather panel.
+The default layout is designed for a **400 × 325 pixel** weather panel.
+
+The CSS can be modified to better match an individual MagicMirror layout.
 
 ## Version History
 
 ### 1.1
 
-Moved WeatherFlow network communication from the browser-side MagicMirror module into `node_helper.js`.
+Version 1.1 moves WeatherFlow network communication from the browser-side MagicMirror module into `node_helper.js`.
 
-Version 1.1:
+Changes include:
 
-- Moves the WeatherFlow WebSocket connection to `node_helper.js`
-- Moves Better Forecast REST requests to `node_helper.js`
-- Keeps display rendering and forecast formatting in the frontend module
-- Uses MagicMirror socket notifications for communication between the frontend and node helper
-- Preserves the appearance and behavior of Version 1.0
-- Requires no additional npm packages on supported Node.js versions
+* Moves the WeatherFlow WebSocket connection to `node_helper.js`
+* Moves Better Forecast REST requests to `node_helper.js`
+* Keeps display rendering and forecast formatting in the frontend module
+* Uses MagicMirror socket notifications for communication between the frontend and node helper
+* Preserves the appearance and behavior of Version 1.0
+* Requires no additional npm packages on supported Node.js versions
 
 ### 1.0
 
@@ -231,4 +273,8 @@ Version 1.0 kept the WeatherFlow REST and WebSocket networking in the browser-si
 
 ## License
 
-No license has been selected yet.
+MMM-TempestWeather is released under the **MIT License**.
+
+Copyright (c) 2026 D.W. Burger
+
+See the `LICENSE` file for details.

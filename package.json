@@ -1,0 +1,20 @@
+{
+  "name": "mmm-tempestweather",
+  "version": "1.1.0",
+  "description": "A MagicMirror module for displaying real-time weather observations and a five-day forecast from a WeatherFlow Tempest weather station.",
+  "main": "MMM-TempestWeather.js",
+  "keywords": [
+    "magicmirror",
+    "magicmirror2",
+    "weather",
+    "weatherflow",
+    "tempest",
+    "forecast"
+  ],
+  "author": "D.W. Burger",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dwburger/MMM-TempestWeather.git"
+  }
+}
