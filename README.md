@@ -1,6 +1,6 @@
 # MMM-TempestWeather
 
-A MagicMirror² weather module for WeatherFlow Tempest owners, combining real-time observations from your personal weather station with current conditions and a five-day forecast.
+A MagicMirror² weather module for WeatherFlow Tempest owners, combining real-time observations from your personal weather station with current conditions and a configurable forecast.
 
 ### Imperial
 
@@ -19,7 +19,7 @@ A MagicMirror² weather module for WeatherFlow Tempest owners, combining real-ti
 * Daily precipitation probability
 * Daily precipitation accumulation
 * Current weather conditions
-* Five-day forecast
+* Configurable 1–7 day forecast
 * Weather icons
 * Imperial and metric unit support
 * Automatic WebSocket reconnection
@@ -238,6 +238,14 @@ This is 60 seconds.
 ### `forecastDays`
 
 Number of forecast days displayed.
+
+Accepted range:
+
+```text
+1-7
+```
+
+Values greater than 7 are automatically limited to 7.
 
 Default:
 

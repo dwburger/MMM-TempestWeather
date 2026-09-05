@@ -854,7 +854,11 @@ Module.register("MMM-TempestWeather", {
 
         var numberOfDays =
             Math.min(
-                this.config.forecastDays,
+                Math.max(
+                    Number(this.config.forecastDays) || 5,
+                    1
+                ),
+                7,
                 dailyForecast.length
             );
 
