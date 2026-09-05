@@ -3,7 +3,7 @@
  *
  * Tempest WeatherFlow dashboard
  *
- * Version 1.1
+ * Version 1.2
  * WeatherFlow communications are handled by node_helper.js.
  */
 
@@ -13,6 +13,7 @@ Module.register("MMM-TempestWeather", {
         token: "",
         deviceId: "",
         stationId: "",
+        units: "imperial",
 
         updateInterval: 60 * 1000,
         observationTimeout: 3 * 60 * 1000,
@@ -375,19 +376,39 @@ Module.register("MMM-TempestWeather", {
         }
 
         if (
-            this.validNumber(
-                observation.temperatureF,
-                -76,
-                158
-            )
+            this.config.units === "metric"
         ) {
-            this.current.temperature =
-                Math.round(
-                    Number(
-                        observation.temperatureF
-                    )
-                ) +
-                "&deg;";
+            if (
+                this.validNumber(
+                    observation.temperatureC,
+                    -60,
+                    70
+                )
+            ) {
+                this.current.temperature =
+                    Math.round(
+                        Number(
+                            observation.temperatureC
+                        )
+                    ) +
+                    "&deg;";
+            }
+        } else {
+            if (
+                this.validNumber(
+                    observation.temperatureF,
+                    -76,
+                    158
+                )
+            ) {
+                this.current.temperature =
+                    Math.round(
+                        Number(
+                            observation.temperatureF
+                        )
+                    ) +
+                    "&deg;";
+            }
         }
 
         if (
@@ -397,17 +418,33 @@ Module.register("MMM-TempestWeather", {
                 100
             )
         ) {
-            var windSpeedMph =
-                Math.round(
-                    Number(
-                        observation.windSpeedMps
-                    ) *
-                    2.236936
-                );
+            if (
+                this.config.units === "metric"
+            ) {
+                var windSpeedKph =
+                    Math.round(
+                        Number(
+                            observation.windSpeedMps
+                        ) *
+                        3.6
+                    );
 
-            this.current.windSpeed =
-                windSpeedMph +
-                " MPH";
+                this.current.windSpeed =
+                    windSpeedKph +
+                    " km/h";
+            } else {
+                var windSpeedMph =
+                    Math.round(
+                        Number(
+                            observation.windSpeedMps
+                        ) *
+                        2.236936
+                    );
+
+                this.current.windSpeed =
+                    windSpeedMph +
+                    " MPH";
+            }
         }
 
         if (
@@ -747,16 +784,29 @@ Module.register("MMM-TempestWeather", {
                     .precip_accum_local_day
             );
 
-        this.current.precipAccum =
+        if (
             Number.isFinite(
                 precipitationValue
             ) &&
-            precipitationValue >= 0 &&
-            precipitationValue < 100
-                ? precipitationValue
-                    .toFixed(2) +
-                  '"'
-                : "—";
+            precipitationValue >= 0
+        ) {
+            if (
+                this.config.units === "metric"
+            ) {
+                this.current.precipAccum =
+                    precipitationValue
+                        .toFixed(1) +
+                    " mm";
+            } else {
+                this.current.precipAccum =
+                    precipitationValue
+                        .toFixed(2) +
+                    '"';
+            }
+        } else {
+            this.current.precipAccum =
+                "—";
+        }
 
         var pressureTrend =
             currentConditions
@@ -778,12 +828,23 @@ Module.register("MMM-TempestWeather", {
                 pressureMb
             )
         ) {
-            barometerHtml +=
-                '&nbsp;<span class="tempestPressure">' +
-                this.mbToInHg(
-                    pressureMb
-                ).toFixed(2) +
-                '"</span>';
+            if (
+                this.config.units === "metric"
+            ) {
+                barometerHtml +=
+                    '&nbsp;<span class="tempestPressure">' +
+                    Math.round(
+                        pressureMb
+                    ) +
+                    " hPa</span>";
+            } else {
+                barometerHtml +=
+                    '&nbsp;<span class="tempestPressure">' +
+                    this.mbToInHg(
+                        pressureMb
+                    ).toFixed(2) +
+                    '"</span>';
+            }
         }
 
         this.current.barometerHtml =

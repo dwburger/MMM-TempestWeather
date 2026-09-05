@@ -1,6 +1,6 @@
 {
   "name": "mmm-tempestweather",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A MagicMirror module for displaying real-time weather observations and a five-day forecast from a WeatherFlow Tempest weather station.",
   "main": "MMM-TempestWeather.js",
   "keywords": [

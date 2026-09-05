@@ -15,15 +15,18 @@ A MagicMirror² weather module for WeatherFlow Tempest owners, combining real-ti
 * Current weather conditions
 * Five-day forecast
 * Weather icons
+* Imperial and metric unit support
 * Automatic WebSocket reconnection
 * Connection watchdog for stale observations
 * Automatic forecast updates
 
 ## Status
 
-**Stable — Version 1.1**
+**Stable — Version 1.2**
 
 MMM-TempestWeather is running on a Raspberry Pi-based MagicMirror² installation and has been tested with live data from a WeatherFlow Tempest weather station.
+
+Both imperial and metric display modes have been tested with live Tempest data.
 
 ## Requirements
 
@@ -82,7 +85,8 @@ Example:
     config: {
         token: "YOUR_WEATHERFLOW_TOKEN",
         deviceId: "YOUR_TEMPEST_DEVICE_ID",
-        stationId: "YOUR_TEMPEST_STATION_ID"
+        stationId: "YOUR_TEMPEST_STATION_ID",
+        units: "imperial"
     }
 },
 ```
@@ -90,6 +94,38 @@ Example:
 Restart MagicMirror after saving the configuration.
 
 Do not place your actual WeatherFlow token in a public Git repository.
+
+## Unit Systems
+
+MMM-TempestWeather supports both imperial and metric units.
+
+For imperial units:
+
+```javascript
+units: "imperial"
+```
+
+Imperial mode displays:
+
+* Temperature in °F
+* Wind speed in MPH
+* Barometric pressure in inHg
+* Precipitation in inches
+
+For metric units:
+
+```javascript
+units: "metric"
+```
+
+Metric mode displays:
+
+* Temperature in °C
+* Wind speed in km/h
+* Barometric pressure in hPa
+* Precipitation in mm
+
+If the `units` option is omitted, the module defaults to imperial units.
 
 ## Configuration Options
 
@@ -110,6 +146,27 @@ The device ID of your Tempest weather station.
 The station ID used for WeatherFlow forecast data.
 
 **Required.**
+
+### `units`
+
+Selects the unit system used by the module.
+
+Available values:
+
+```text
+imperial
+metric
+```
+
+Default:
+
+```text
+imperial
+```
+
+Imperial mode uses °F, MPH, inHg, and inches.
+
+Metric mode uses °C, km/h, hPa, and mm.
 
 ### `updateInterval`
 
@@ -192,6 +249,7 @@ The browser-side module is responsible for:
 * Building the dashboard display
 * Receiving weather data from `node_helper.js`
 * Formatting current observations
+* Applying the selected unit system
 * Processing forecast data for display
 * Selecting weather icons
 * Updating the MagicMirror DOM
@@ -202,7 +260,7 @@ The Node.js helper is responsible for:
 
 * Connecting to the WeatherFlow WebSocket service
 * Receiving real-time Tempest observations
-* Requesting WeatherFlow Better Forecast data
+* Requesting WeatherFlow Better Forecast data using the selected unit system
 * Managing forecast update intervals
 * Detecting stale WebSocket observations
 * Automatically reconnecting the WebSocket
@@ -249,6 +307,22 @@ The default layout is designed for a **400 × 325 pixel** weather panel.
 The CSS can be modified to better match an individual MagicMirror layout.
 
 ## Version History
+
+### 1.2
+
+Version 1.2 adds user-selectable imperial and metric units.
+
+Changes include:
+
+* Adds the `units` configuration option
+* Supports `imperial` and `metric` unit systems
+* Defaults to imperial units for backward compatibility
+* Displays imperial temperature in °F and metric temperature in °C
+* Displays imperial wind speed in MPH and metric wind speed in km/h
+* Displays imperial barometric pressure in inHg and metric pressure in hPa
+* Displays imperial precipitation in inches and metric precipitation in mm
+* Requests Better Forecast data using the selected unit system
+* Preserves the Version 1.1 display and behavior when using imperial units
 
 ### 1.1
 

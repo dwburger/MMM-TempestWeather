@@ -3,7 +3,7 @@
  *
  * Node helper for WeatherFlow communications.
  *
- * Version 1.1
+ * Version 1.2
  */
 
 const NodeHelper = require("node_helper");
@@ -396,6 +396,9 @@ module.exports = NodeHelper.create({
                 temperatureF:
                     temperatureF,
 
+                temperatureC:
+                    temperatureC,
+
                 windSpeedMps:
                     this.validNumber(
                         windSpeedMps,
@@ -553,9 +556,15 @@ module.exports = NodeHelper.create({
             encodeURIComponent(
                 this.config.token
             ) +
-            "&units_temp=f" +
-            "&units_wind=mph" +
-            "&units_precip=in";
+(
+                this.config.units === "metric"
+                    ? "&units_temp=c" +
+                      "&units_wind=kph" +
+                      "&units_precip=mm"
+                    : "&units_temp=f" +
+                      "&units_wind=mph" +
+                      "&units_precip=in"
+            );
 
         fetch(url, {
             signal:
