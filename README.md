@@ -2,7 +2,13 @@
 
 A MagicMirror² weather module for WeatherFlow Tempest owners, combining real-time observations from your personal weather station with current conditions and a five-day forecast.
 
-![MMM-TempestWeather screenshot](screenshots/MMM-TempestWeather.png)
+### Imperial
+
+![MMM-TempestWeather Imperial](screenshots/MMM-TempestWeather.png)
+
+### Metric
+
+![MMM-TempestWeather Metric](screenshots/MMM-TempestWeather-Metric.png)
 
 ## Features
 
@@ -65,7 +71,8 @@ MMM-TempestWeather/
 ├── README.md
 ├── LICENSE
 └── screenshots/
-    └── MMM-TempestWeather.png
+    ├── MMM-TempestWeather.png
+    └── MMM-TempestWeather-Metric.png
 ```
 
 ## Configuration
