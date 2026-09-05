@@ -28,7 +28,7 @@ A MagicMirror² weather module for WeatherFlow Tempest owners, combining real-ti
 
 ## Status
 
-**Stable — Version 1.2**
+**Stable — Version 1.2.1**
 
 MMM-TempestWeather is running on a Raspberry Pi-based MagicMirror² installation and has been tested with live data from a WeatherFlow Tempest weather station.
 
@@ -322,6 +322,16 @@ The default layout is designed for a **400 × 325 pixel** weather panel.
 The CSS can be modified to better match an individual MagicMirror layout.
 
 ## Version History
+
+### 1.2.1
+
+Version 1.2.1 limits the configurable forecast display to seven days.
+
+Changes include:
+
+* Supports `forecastDays` values from 1 through 7
+* Limits values greater than 7 to 7
+* Keeps the default forecast length at 5 days
 
 ### 1.2
 
